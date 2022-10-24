@@ -20,15 +20,20 @@ function Posts() {
   const [postItemNo, setPostItemNo] = useState({ last: 9 });
   useEffect(() => {
     getPosts(setLoading, setError, token);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [posts, postItemNo]);
 
   const handleScroll = () => {
     if (
       window.innerHeight + document.documentElement.scrollTop + 200 >=
-      document.scrollingElement.scrollHeight
+        document.scrollingElement.scrollHeight &&
+      posts.length > postItemNo.last
     ) {
       setPostItemNo((prevValue) => {
         return {
