@@ -5,13 +5,29 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  fullname: {
+    type: String,
+    required: true,
+  },
   imageSrc: {
     type: String,
     required: true,
   },
   caption: {
     type: String,
+    required: false,
+  },
+  message: {
+    type: String,
+    required: false,
+  },
+  date: {
+    type: String,
     required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 

@@ -3,7 +3,7 @@ import Posts from "../models/postModel.js";
 const postCtrl = {
   getPosts: async (req, res) => {
     try {
-      const posts = await Posts.find();
+      const posts = await Posts.find().sort({ createdAt: -1 });
 
       res.json(posts);
     } catch (err) {
@@ -12,8 +12,15 @@ const postCtrl = {
   },
   createPost: async (req, res) => {
     try {
-      const { imageSrc, caption } = req.body;
-      const newPost = new Posts({ userId: req.user._id, imageSrc, caption });
+      const { userId, fullname, imageSrc, caption, message, date } = req.body;
+      const newPost = new Posts({
+        userId,
+        fullname,
+        imageSrc,
+        caption,
+        message,
+        date,
+      });
       await newPost.save();
 
       res.json({ message: "Post created" });
@@ -23,7 +30,9 @@ const postCtrl = {
   },
   getUserPosts: async (req, res) => {
     try {
-      const posts = await Posts.find({ userId: req.user._id });
+      const posts = await Posts.find({ userId: req.user._id }).sort({
+        createdAt: -1,
+      });
 
       res.json(posts);
     } catch (err) {

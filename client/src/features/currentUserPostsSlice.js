@@ -4,15 +4,15 @@ const initialState = {
   value: [],
 };
 
-const postsSlice = createSlice({
-  name: "posts",
+const currentUserPostsSlice = createSlice({
+  name: "currentUserPosts",
   initialState,
   reducers: {
-    posts: (state, action) => {
+    currentUserPostsAction: (state, action) => {
       state.value = action.payload;
     },
     createNewPost: (state, action) => {
-      state.value.unshift(action.payload);
+      state.value.push(action.payload);
     },
     removePost: (state, action) => {
       state.value = state.value.filter((ad, index) => index !== action.payload);
@@ -23,7 +23,7 @@ const postsSlice = createSlice({
   },
 });
 
-export const { posts, createNewPost, removePost, editPost } =
-  postsSlice.actions;
+export const { currentUserPostsAction, createNewPost, removePost, editPost } =
+  currentUserPostsSlice.actions;
 
-export default postsSlice.reducer;
+export default currentUserPostsSlice.reducer;

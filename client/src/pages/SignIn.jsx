@@ -109,7 +109,7 @@ function SignIn() {
           </Grid>
         </Box>
       </Box>
-      {/* {user && <Navigate to="/" />} */}
+      {user && <Navigate to="/" />}
       <h3>{error}</h3>
       <Footer sx={{ mt: 5 }} />
     </Container>

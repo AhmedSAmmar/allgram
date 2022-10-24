@@ -4,6 +4,7 @@ import { storage } from "../firebase/firebase-config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { createPost, getPosts } from "../api/posts";
 import { LinearProgress, Box } from "@mui/material";
+import currentDate from "../date";
 
 // Material UI
 import {
@@ -24,21 +25,24 @@ function CreatePost() {
   const [open, setOpen] = React.useState(false);
   const [caption, setCaption] = useState("");
   const [image, setImage] = useState("");
+  const [message, setMessage] = useState("");
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
   const { user, token } = useSelector((state) => state.currentUser.value);
 
   const handleClick = () => {
     setLoading(true);
     uploadFiles(image);
-    handleClose();
-    setCaption("");
-    setImage("");
   };
 
   const uploadFiles = (file) => {
+    if (!file) {
+      setError("Image required");
+      setLoading(false);
+      return;
+    }
+
     const storageRef = ref(storage, `${user._id}/${file.name}`);
 
     const uploadTask = uploadBytesResumable(storageRef, file);
@@ -58,9 +62,23 @@ function CreatePost() {
       },
       async () => {
         const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-        console.log("File available at", downloadURL);
-        createPost(user._id, downloadURL, caption, setLoading, setError, token);
-        getPosts(setLoading, setError, token);
+        const date = currentDate();
+        await createPost(
+          user._id,
+          user.fullname,
+          downloadURL,
+          caption,
+          message,
+          date,
+          setLoading,
+          setError,
+          token
+        );
+        // await getPosts(setLoading, setError, token);
+        handleClose();
+        setCaption("");
+        setImage("");
+        setMessage("");
       }
     );
   };
@@ -76,12 +94,12 @@ function CreatePost() {
   };
   // JSX
 
-  if (loading)
-    return (
-      <Box sx={{ width: "100%" }}>
-        <LinearProgress />
-      </Box>
-    );
+  // if (loading)
+  //   return (
+  //     <Box sx={{ width: "100%" }}>
+  //       <LinearProgress />
+  //     </Box>
+  //   );
 
   return (
     <div>
@@ -94,6 +112,11 @@ function CreatePost() {
         Create New Post <AddIcon />
       </Button>
       <Dialog open={open} onClose={handleClose}>
+        {loading && (
+          <Box sx={{ width: "100%" }}>
+            <LinearProgress />
+          </Box>
+        )}
         <DialogTitle>Create New Post </DialogTitle>
         <DialogContent component="form">
           <input
@@ -117,13 +140,30 @@ function CreatePost() {
               setCaption(value);
             }}
           />
+          <TextField
+            autoFocus
+            multiline
+            rows={4}
+            margin="dense"
+            label="Meassage"
+            name="message"
+            fullWidth
+            variant="outlined"
+            value={message}
+            onChange={(event) => {
+              const value = event.target.value;
+              setMessage(value);
+            }}
+          />
         </DialogContent>
         <DialogActions>
+          <h3>{error}</h3>
           <Button
             variant="contained"
             color="primary"
             sx={{ ml: "10px" }}
             onClick={handleClick}
+            disabled={loading}
           >
             <AddIcon />
           </Button>

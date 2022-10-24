@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.get("/posts", auth, postCtrl.getPosts);
 router.post("/posts", auth, postCtrl.createPost);
-router.get("/userPosts", auth, postCtrl.getPosts);
+router.get("/userPosts", auth, postCtrl.getUserPosts);
 
 export default router;
