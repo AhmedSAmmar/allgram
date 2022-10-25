@@ -57,7 +57,8 @@ function CreatePost() {
         setProgress(prog);
       },
       (error) => {
-        console.log(error);
+        console.log(error.message);
+        setError(error.message);
         setLoading(false);
       },
       async () => {
@@ -74,7 +75,7 @@ function CreatePost() {
           setError,
           token
         );
-        // await getPosts(setLoading, setError, token);
+
         handleClose();
         setCaption("");
         setImage("");
@@ -92,14 +93,6 @@ function CreatePost() {
   const handleClose = () => {
     setOpen(false);
   };
-  // JSX
-
-  // if (loading)
-  //   return (
-  //     <Box sx={{ width: "100%" }}>
-  //       <LinearProgress />
-  //     </Box>
-  //   );
 
   return (
     <div>

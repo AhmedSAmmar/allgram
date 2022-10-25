@@ -1,6 +1,6 @@
 import axios from "axios";
 import store from "../app/store";
-import { currentUserAction } from "../features/currentUser";
+import { currentUserAction } from "../features/currentUserSlice";
 
 export const registerUser = async (
   firstname,
@@ -94,7 +94,7 @@ export const currentAuthUser = async () => {
       console.log(errorMessage);
     } else {
       // error(err.message);
-      console.log(errorMessage);
+      console.log(err.Message);
     }
     // loading(false);
   }
@@ -117,7 +117,7 @@ export const logoutUser = async () => {
       console.log(errorMessage);
     } else {
       // error(err.message);
-      console.log(errorMessage);
+      console.log(err.Message);
     }
     // loading(false);
   }

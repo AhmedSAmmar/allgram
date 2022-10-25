@@ -11,15 +11,6 @@ const postsSlice = createSlice({
     posts: (state, action) => {
       state.value = action.payload;
     },
-    createNewPost: (state, action) => {
-      state.value.unshift(action.payload);
-    },
-    removePost: (state, action) => {
-      state.value = state.value.filter((ad, index) => index !== action.payload);
-    },
-    editPost: (state, action) => {
-      state.value[action.payload.id] = action.payload.value;
-    },
   },
 });
 

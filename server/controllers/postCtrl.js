@@ -12,10 +12,10 @@ const postCtrl = {
   },
   createPost: async (req, res) => {
     try {
-      const { userId, fullname, imageSrc, caption, message, date } = req.body;
+      const { imageSrc, caption, message, date } = req.body;
       const newPost = new Posts({
-        userId,
-        fullname,
+        userId: req.user._id,
+        fullname: req.user.fullname,
         imageSrc,
         caption,
         message,

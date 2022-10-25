@@ -19,8 +19,6 @@ export const createPost = async (
       method: "post",
       url: "http://localhost:5000/api/posts",
       data: {
-        userId: userId,
-        fullname: fullname,
         imageSrc: imageSrc,
         caption: caption,
         message: message,
